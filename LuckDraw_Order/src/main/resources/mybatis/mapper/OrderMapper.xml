@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.likuncheng.order.mapper.OrderMapper">
+
+	<insert id="createOrder"
+		parameterType="com.likuncheng.order.entity.Order"
+		useGeneratedKeys="true" keyProperty="oId">
+		insert into
+		`order`(accountNumber,type,orderNumber,createTime,money,orderDescribe,payToken)
+		VALUES(#{accountNumber},#{type},#{orderNumber},#{createTime},#{money},#{orderDescribe},#{payToken})
+	</insert>
+
+	<update id="updatePsyState"
+		parameterType="com.likuncheng.order.entity.Order">
+		update `order` set
+		payState = #{payState} , version =
+		version+1 ,
+		updateTime =
+		#{updateTime} where
+		orderNumber = #{orderNumber}
+		and
+		version = #{version}
+	</update>
+
+	<select id="getOrderByAccountNumberAndPayState"
+		parameterType="java.lang.String" resultMap="getOrder">
+		select * from `order` where
+		accountNumber = #{accountNumber}
+		and
+		payState = 0
+	</select>
+
+	<select id="getOrderByOrderNumber" resultMap="getOrder"
+		parameterType="java.lang.String">
+		select * from `order` where orderNumber = #{orderNumber}
+	</select>
+
+	<resultMap type="com.likuncheng.order.entity.Order"
+		id="getOrder">
+		<id property="oId" column="oId" />
+		<result property="orderNumber" column="orderNumber" />
+		<result property="accountNumber" column="accountNumber" />
+		<result property="orderDescribe" column="orderDescribe" />
+		<result property="createTime" column="createTime" />
+		<result property="payState" column="payState" />
+		<result property="money" column="money" />
+		<result property="type" column="type" />
+		<result property="updateTime" column="updateTime" />
+		<result property="version" column="version" />
+		<result property="payToken" column="payToken" />
+	</resultMap>
+
+
+
+</mapper>

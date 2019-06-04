@@ -1,0 +1,28 @@
+server:
+  port: 9102
+spring: 
+  application: 
+    name: LuckDrawOrder
+  datasource: 
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/luckdraw_order?characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 123456
+    hikari:
+      maximum-pool-size: 20  #最大线程数
+    dbcp2:                                        #  进行数据库连接池的配置
+      min-idle: 5                                 #  数据库连接池的最小维持连接数
+      initial-size: 5                             #  初始化提供的连接数
+      max-total: 5                                #  最大连接数
+      max-wait-millis: 200
+mybatis: 
+  config-location: classpath:mybatis/mybatis.cfg.xml    #  mybatis主配置文件所在路径
+  mapper-locations:  classpath:mybatis/mapper/*.xml     #  所有的mapper映射文件
+tx-lcn: 
+  client: 
+    manager-address: 127.0.0.1:9999
+eureka: 
+  client:
+    serviceUrl: 
+      defaultZone: http://127.0.0.1:9100/eureka/
+    

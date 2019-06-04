@@ -1,0 +1,33 @@
+server:
+  port: 9105
+spring: 
+  application: 
+    name: LuckDrawZuul
+eureka: 
+  client:
+    serviceUrl: 
+      defaultZone: http://127.0.0.1:9100/eureka/
+#  instance:  
+#    lease-renewal-interval-in-seconds: 1       #一秒之后给server发送心跳 说明我还活着
+#    lease-expiration-duration-in-seconds: 2    #如果两秒之后我还没有发送心跳 证明我已经死了
+zuul:
+#  ignoredServices: '*'   忽略的地址
+  routes: 
+    stripPrefix: true    #配置前缀 到时候访问的时候需要加上luckdraw 但是实际真实的地址会省略
+    core:  
+      path: /luckdraw/core/**
+      service-id: LuckDrawCore
+    sso: 
+      path: /luckdraw/sso/**
+      service-id: LuckDrawSSO
+#该服务需要禁用eureka 和配置自己的ribbon列表 因为受用zuul就默认不会进行负载均衡
+#ribbon:
+#  eureka:
+#    enabled: false
+#配置core的ribbon负载均衡的地址 我这里就是随便写的两个地址 后面的地址是没得的
+#core: 
+#  ribbon: 
+#   listOfServers: 127.0.0.1:9101,127.0.0.1:10001
+#sso: 
+#  ribbon: 
+#   listOfServers: 127.0.0.1:9104,127.0.0.1:10004

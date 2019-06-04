@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.likuncheng.core.mapper.GoldKeyMapper">
+
+	<insert id="createGoldKey"
+		parameterType="com.likuncheng.core.entity.GoldKey"
+		useGeneratedKeys="true" keyProperty="gId">
+		insert into
+		`goldkey`(accountNumber,keyNumber)
+		values(#{accountNumber},#{keyNumber})
+	</insert>
+
+	<select id="getAccountNumber" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select accountNumber from goldkey where accountNumber =
+		#{accountNumber}
+	</select>
+
+	<update id="updateGoldKey"
+		parameterType="com.likuncheng.core.entity.GoldKey">
+		update goldkey set keyNumber = #{keyNumber} , luckNumber
+		= #{luckNumber},
+		version=version+1 where
+		accountNumber =
+		#{accountNumber} and version = #{version}
+	</update>
+
+	<select id="getGoldKeyByAccountNumber"
+		parameterType="java.lang.String" resultMap="getGoldKey">
+		select * from goldkey where
+		accountNumber = #{accountNumber}
+	</select>
+
+	<resultMap type="com.likuncheng.core.entity.GoldKey"
+		id="getGoldKey">
+		<id property="gId" column="gId" />
+		<result property="accountNumber" column="accountNumber" />
+		<result property="keyNumber" column="keyNumber" />
+		<result property="integral" column="integral" />
+		<result property="luckNumber" column="luckNumber" />
+		<result property="version" column="version" />
+	</resultMap>
+
+	<update id="addIntegral"
+		parameterType="com.likuncheng.core.entity.GoldKey">
+		update goldkey set integral = #{integral} ,
+		version=version+1 where
+		accountNumber = #{accountNumber} and version = #{version}
+	</update>
+	
+	<update id="reduceIntegral"
+		parameterType="com.likuncheng.core.entity.GoldKey">
+		update goldkey set integral = #{integral} ,
+		version=version+1 where
+		accountNumber = #{accountNumber} and version = #{version}
+	</update>
+
+
+
+
+</mapper>

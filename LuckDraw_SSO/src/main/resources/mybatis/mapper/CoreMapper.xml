@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.likuncheng.sso.mapper.SSOMapper">
+
+	<insert id="register"
+		parameterType="com.likuncheng.sso.entity.User" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		`user`(`accountNumber`,`passWord`,`nickName`,`registerTime`)
+		values(#{accountNumber},#{passWord},#{nickName},#{registerTime})
+	</insert>
+
+	<select id="login" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select accountNumber from `user` where accountNumber =
+		#{accountNumber} and `passWord` = #{passWord}
+	</select>
+
+	<select id="getAccountNumber" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select accountNumber from `user` where accountNumber =
+		#{accountNumber}
+	</select>
+
+
+</mapper>
