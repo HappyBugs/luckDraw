@@ -1,1 +1,16 @@
 # luckDraw
+分布式抽奖系统LuckDraw
+开发技术：SpringBoot，Springcloud，zuul，hystrix，lombok，mysql，mybatis，Redis，fastjson，jjwt，txlcn，线程池，支付宝sdk...
+使用工具：eclipse，tomcat，natapp，postman，redisclient，jmeter
+功能介绍：项目基与SPringBoot2.x和SpringCloud2.x以及JDK1.8进行开发，用户可在线进行支付宝支付购买金钥匙进行抽奖，充值10元可获得1把金钥匙，充值100元可获得11把金钥匙，充值次数不限。支持在两种抽奖方案。第一种：消耗一把钥匙进行单次抽奖，获得一个商品。第二种：消耗10把钥匙进行10连抽奖，获得10个商品，所有商品均保存在暂存箱，用户可选择进行分解，获得对应的分解积分，当积分达到一定数量可进行兑换商品，抽奖商品均可以进行兑换。
+服务介绍：
+LuckDraw_SSO：用户注册单点登录系统，密码使用jwt协议使用HS256算法进行加密与解密，使用全局loginToken进行登录验证
+LuckDraw_Common：抽奖工具类，用于生成常用的token以及一些全局id类的东西和cookie的封装和redis的常用封装，以及reponseBase响应格式的设置，因为使用restful风格所以统一返回格式。
+LuckDraw_Core：抽奖核心功能，实现了用户发起支付请求，以及抽奖核心功能，用户使用feign调用支付服务的发起服务请求，进行发起支付宝支付请求，实现抽奖功能，暂存箱功能，使用线程池进行分发请求，提高程序效率，使用同步代码块以及数据库乐观锁进行保证线程安全问题
+LuckDraw_Order：订单接口服务，没有视图层，控制层，只有业务逻辑层，该服务提供接口分别给LuckDraw_Core服务进行调用创建订单和支付服务进行调用修改订单支付状态
+LuckDraw_Pay：支付服务，提供接口给LuckDraw_Core服务进行调用发起支付请求，实现同步调用地址以及异步调用地址。同步调用地址进行支付数据展示，异步调用地址用于修改支付记录，订单状态，以及充值的金钥匙的增加以及创建，同样为了保证线程安全问题使用数据库乐观锁以及同步代码块，为了提高程序效率使用自定义线程池技术，使用natApp进行内网穿透，进行支付宝链条。
+LuckDraw_TxManager：用于管理tx-client，使用tx-lcn进行实现分布式事务问题。该服务类似于注册中心，
+LuckDraw_eureka：管理服务，进行提供调用地址
+LuckDraw_Zuul：网关服务，用于进行反向代理，隐藏真实地址
+概述：
+基于SpringBoot2.x和SpringCloud2.X进行开发，使用zuul作为接口网关，限制访问，使用rabbin作为负载均衡，hystrix进行熔断，解决雪崩，限流以及熔断和消锋，eureka作为分布式注册中心，管理服务，提供嗲用地址，数据库使用mysql，数据持久层使用mybatis，分布式事务解决使用tx-lcn，数据缓存使用redis，支付使用支付宝。服务调用使用feign，简化代码使用lombok，json解析使用fastjson，密码加密使用jwt，线程安全问题使用同步代码块以及数据库乐观锁，使用线程池进行提高程序性能。测试接口使用postman，内网穿透使用natapp，并发测试使用jmeter
